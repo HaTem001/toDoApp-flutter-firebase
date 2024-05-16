@@ -1,32 +1,47 @@
-# Project Name
+# To Do App
 
-Brief description or overview of your project.
+Task Managment Using Flutter and Firebase.
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Structure](#structure)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
-Briefly introduce your project. What problem does it solve? What technologies does it use?
+Developing a ToDo application for managing a list of tasks, using firebase for **Authentication** and **Storing Data** with firestore, and Provider for **State Management**.
 
 ## Features
 
-List the key features of your project.
+Flutter dependencies and versions :
+- provider: ^6.1.2
+- flutter_spinkit: ^5.2.1
+- firebase_core: ^2.31.0
+- cloud_firestore: ^4.17.3
+- firebase_auth: ^4.19.5
 
 ## Installation
 
-Provide instructions on how to install and set up your project. Include any dependencies that need to be installed.
+To get started with this project, follow these steps:
+1. **Clone the Repository**: 
+   ```bash
+   git clone https://github.com/HaTem001/toDoApp-flutter-firebase.git
 
-## Usage
+2. **Navigate to the Project Directory**
+3. **Install Dependencies**
+      ```bash
+   flutter pub get
+5. **Set Up Firebase**
+6. **Run the Application**
 
-Explain how to use your project. Provide examples if necessary.
+
+## ScreenShots
+
+![Screenshots](screenshots.jpg)
+
+
 
 ## Structure
 
@@ -64,12 +79,3 @@ Explain how to use your project. Provide examples if necessary.
 │           loading.dart
 ```
 
-Explain the structure of your project directory.
-
-## Contributing
-
-Explain how others can contribute to your project. Include guidelines for submitting pull requests and reporting issues.
-
-## License
-
-Include information about the license under which your project is released.
