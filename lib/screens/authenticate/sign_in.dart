@@ -4,17 +4,14 @@ import '../../shared/constants.dart';
 import '../../shared/loading.dart';
 
 class SignIn extends StatefulWidget {
-
   final Function toggleView;
   SignIn({ required this.toggleView });
-
 
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
@@ -27,15 +24,15 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: Colors.grey[900], // Dark background color from Home
       appBar: AppBar(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: Colors.grey[850], // Dark AppBar color from Home
         elevation: 0.0,
-        title: const Text('Sign in'),
+        title: const Text('Sign in', style: TextStyle(color: Colors.white)), // White text color from Home
         actions: <Widget>[
           TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Register'),
+            icon: Icon(Icons.person, color: Colors.white), // White icon color from Home
+            label: Text('Register', style: TextStyle(color: Colors.white)), // White text color from Home
             onPressed: () => widget.toggleView(),
           ),
         ],
@@ -58,7 +55,6 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                 obscureText: true,
                 decoration: textInputDecoration.copyWith(hintText: 'password'),
-
                 validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
                   setState(() => password = val);
@@ -66,9 +62,12 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent, // Color that stands out in dark mode from Home
+                  ),
                   child: Text(
                     'Sign In',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white), // White text color from Home
                   ),
                   onPressed: () async {
                     if(_formKey.currentState!.validate()){

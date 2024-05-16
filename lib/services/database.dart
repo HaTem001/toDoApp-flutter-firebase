@@ -13,6 +13,7 @@ class DatabaseService {
       'category': task.category,
       'priority': task.priority,
       'userID': userID,
+      'deadline': task.deadline,
     });
   }
   Future<void> updateTask(Task task) async {
@@ -21,6 +22,7 @@ class DatabaseService {
       'description': task.description,
       'category': task.category,
       'priority': task.priority,
+      'deadline':task.deadline,
     });
   }
 
@@ -37,6 +39,7 @@ class DatabaseService {
       category: doc['category'],
       priority: doc['priority'],
       userID: doc['userID'],
+      deadline: (doc['deadline'] as Timestamp).toDate(),
     ))
         .toList());
   }

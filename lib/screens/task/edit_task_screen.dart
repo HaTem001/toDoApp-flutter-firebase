@@ -19,6 +19,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   late String _description;
   late String _category;
   late String _priority;
+  late DateTime _deadline;
 
   @override
   void initState() {
@@ -28,11 +29,13 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       _description = widget.task!.description;
       _category = widget.task!.category;
       _priority = widget.task!.priority;
+      _deadline = widget.task!.deadline ?? DateTime.now();
     } else {
       _title = '';
       _description = '';
       _category = 'Work';
       _priority = 'High';
+      _deadline = DateTime.now();
     }
   }
 
@@ -94,6 +97,43 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               onChanged: (value) => _priority = value!,
             ),
 
+            ListTile(
+              title: Text('Deadline'),
+              subtitle: Text(_deadline.toString()),
+              onTap: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: _deadline,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2101),
+                );
+                if (picked != null && picked != _deadline)
+                  setState(() {
+                    _deadline = picked;
+                  });
+              },
+            ),
+            ListTile(
+              title: Text('Time'),
+              subtitle: Text(_deadline.toString()),
+              onTap: () async {
+                final TimeOfDay? picked = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.fromDateTime(_deadline),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _deadline = DateTime(
+                      _deadline.year,
+                      _deadline.month,
+                      _deadline.day,
+                      picked.hour,
+                      picked.minute,
+                    );
+                  });
+                }
+              },
+            ),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -104,6 +144,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     description: _description,
                     category: _category,
                     priority: _priority,
+                    deadline: _deadline, // Assign the selected deadline
                     userID: Provider.of<User?>(context, listen: false)!.uid,
                   );
                   final userID = Provider.of<User?>(context, listen: false)!.uid;

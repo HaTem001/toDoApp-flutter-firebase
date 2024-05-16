@@ -5,6 +5,7 @@ class Task {
   final String category;
   final String priority;
   final String userID;
+  final DateTime deadline;
 
   Task({
     required this.id,
@@ -13,5 +14,6 @@ class Task {
     required this.category,
     required this.priority,
     required this.userID,
+    required this.deadline,
   });
 }
