@@ -1,8 +1,10 @@
+//edit_task_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/services/task_provider.dart';
 import '../../models/user.dart';
+import '../../shared/constants.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final Task? task;
@@ -42,8 +44,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color to black
       appBar: AppBar(
-        title: Text(widget.task == null ? 'Create Task' : 'Edit Task'),
+        iconTheme: IconThemeData(color: Colors.white), // Set the color of the back arrow to white
+        title: Text(widget.task == null ? 'Create Task' : 'Edit Task', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black, // Set AppBar color to dark grey
       ),
       body: Form(
         key: _formKey,
@@ -51,7 +56,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           padding: EdgeInsets.all(16.0),
           children: [
             TextFormField(
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: textInputDecoration.copyWith(labelText: 'Title'), // Use textInputDecoration
               initialValue: _title,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -61,8 +66,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               },
               onSaved: (value) => _title = value!,
             ),
+            const SizedBox(height: 20.0),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: textInputDecoration.copyWith(labelText: 'Description'), // Use textInputDecoration
               initialValue: _description,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -72,8 +78,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               },
               onSaved: (value) => _description = value!,
             ),
+            const SizedBox(height: 20.0),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Category'),
+              decoration: textInputDecoration.copyWith(labelText: 'Category'), // Use textInputDecoration
               value: _category,
               items: <String>['Work', 'Personal', 'Others']
                   .map<DropdownMenuItem<String>>((String value) {
@@ -84,8 +91,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               }).toList(),
               onChanged: (value) => _category = value!,
             ),
+            const SizedBox(height: 20.0),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Priority'),
+              decoration: textInputDecoration.copyWith(labelText: 'Priority'), // Use textInputDecoration
               value: _priority,
               items: <String>['High', 'Medium', 'Low']
                   .map<DropdownMenuItem<String>>((String value) {
@@ -96,6 +104,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               }).toList(),
               onChanged: (value) => _priority = value!,
             ),
+            const SizedBox(height: 20.0),
+
 
             ListTile(
               title: Text('Deadline'),
@@ -113,6 +123,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   });
               },
             ),
+            const SizedBox(height: 20.0),
             ListTile(
               title: Text('Time'),
               subtitle: Text(_deadline.toString()),
@@ -134,7 +145,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 }
               },
             ),
+            const SizedBox(height: 20.0),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Set the background color to black
+              ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
@@ -160,8 +175,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   Navigator.pop(context);
                 }
               },
-              child: Text(widget.task == null ? 'Save' : 'Update'), // Change button text based on task existence
-            ),
+              child: Text(
+                widget.task == null ? 'Save' : 'Update',
+                style: TextStyle(color: Colors.white), // Set the text color to white
+              ),            ),
           ],
         ),
       ),
