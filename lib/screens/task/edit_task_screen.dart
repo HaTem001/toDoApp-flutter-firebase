@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/services/task_provider.dart';
+import '../../models/user.dart';
 
 class EditTaskScreen extends StatefulWidget {
   @override
@@ -79,9 +80,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     description: _description,
                     category: _category,
                     priority: _priority,
+                    userID: Provider.of<User?>(context, listen: false)!.uid,
                   );
+                  final userID = Provider.of<User?>(context, listen: false)!.uid;
                   Provider.of<TaskProvider>(context, listen: false)
-                      .createTask(newTask);
+                      .createTask(newTask, userID); // Pass the userID
                   Navigator.pop(context);
                 }
               },

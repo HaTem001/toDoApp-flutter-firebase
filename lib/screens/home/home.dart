@@ -1,10 +1,9 @@
-//home.dart
 import 'package:flutter/material.dart';
+import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/models/task.dart';
 import 'package:to_do_list/services/task_provider.dart';
-
 import '../task/edit_task_screen.dart';
 
 class Home extends StatelessWidget {
@@ -12,16 +11,18 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User?>(context);
+
     return Scaffold(
       backgroundColor: Colors.brown[50],
       appBar: AppBar(
-        title: Text('TO DO App'),
+        title: const Text('TO DO App'),
         backgroundColor: Colors.blue,
         elevation: 0.0,
         actions: <Widget>[
           TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
+            icon: const Icon(Icons.person),
+            label: const Text('logout'),
             onPressed: () async {
               await _auth.signOut();
             },
@@ -29,10 +30,19 @@ class Home extends StatelessWidget {
         ],
       ),
       body: StreamBuilder<List<Task>>(
-
-        stream: Provider.of<TaskProvider>(context).tasks,
+        stream: Provider.of<TaskProvider>(context).getTasks(user!.uid), // Pass user's ID to getTasks
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('No tasks available.'),
+            );
+          } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -43,12 +53,7 @@ class Home extends StatelessWidget {
                 );
               },
             );
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
           }
-
-          // Show a loading spinner if the tasks are still loading
-          return CircularProgressIndicator();
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -58,8 +63,8 @@ class Home extends StatelessWidget {
             MaterialPageRoute(builder: (context) => EditTaskScreen()),
           );
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }

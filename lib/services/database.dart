@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/task.dart';
 
 class DatabaseService {
@@ -7,12 +6,13 @@ class DatabaseService {
   // collection reference
   final CollectionReference taskCollection = FirebaseFirestore.instance.collection('tasks');
 
-  Future<void> createTask(Task task) async {
+  Future<void> createTask(Task task, String userID) async {
     await taskCollection.add({
       'title': task.title,
       'description': task.description,
       'category': task.category,
       'priority': task.priority,
+      'userID': userID,
     });
   }
   Future<void> updateTask(Task task) async {
@@ -28,14 +28,15 @@ class DatabaseService {
     await taskCollection.doc(taskId).delete();
   }
 
-  Stream<List<Task>> getTasks() {
-    return taskCollection.snapshots().map((snapshot) => snapshot.docs
+  Stream<List<Task>> getTasks(String userID) {
+    return taskCollection.where('userID', isEqualTo: userID).snapshots().map((snapshot) => snapshot.docs
         .map((doc) => Task(
       id: doc.id,
       title: doc['title'],
       description: doc['description'],
       category: doc['category'],
       priority: doc['priority'],
+      userID: doc['userID'],
     ))
         .toList());
   }
