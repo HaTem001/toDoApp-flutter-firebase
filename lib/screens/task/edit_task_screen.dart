@@ -5,6 +5,10 @@ import 'package:to_do_list/services/task_provider.dart';
 import '../../models/user.dart';
 
 class EditTaskScreen extends StatefulWidget {
+  final Task? task;
+
+  EditTaskScreen({this.task});
+
   @override
   _EditTaskScreenState createState() => _EditTaskScreenState();
 }
@@ -17,10 +21,26 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   late String _priority;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.task != null) {
+      _title = widget.task!.title;
+      _description = widget.task!.description;
+      _category = widget.task!.category;
+      _priority = widget.task!.priority;
+    } else {
+      _title = '';
+      _description = '';
+      _category = 'Work';
+      _priority = 'High';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create/Edit Task'),
+        title: Text(widget.task == null ? 'Create Task' : 'Edit Task'),
       ),
       body: Form(
         key: _formKey,
@@ -29,6 +49,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           children: [
             TextFormField(
               decoration: InputDecoration(labelText: 'Title'),
+              initialValue: _title,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a title';
@@ -39,6 +60,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Description'),
+              initialValue: _description,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a description';
@@ -49,6 +71,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             ),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(labelText: 'Category'),
+              value: _category,
               items: <String>['Work', 'Personal', 'Others']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -60,6 +83,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             ),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(labelText: 'Priority'),
+              value: _priority,
               items: <String>['High', 'Medium', 'Low']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -69,13 +93,13 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               }).toList(),
               onChanged: (value) => _priority = value!,
             ),
-            // Add more form fields for description, category, and priority
+
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   final Task newTask = Task(
-                    id: '', // You can generate an id or leave it empty if Firestore generates it
+                    id: widget.task?.id ?? '', // Use existing task ID if editing
                     title: _title,
                     description: _description,
                     category: _category,
@@ -83,12 +107,19 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     userID: Provider.of<User?>(context, listen: false)!.uid,
                   );
                   final userID = Provider.of<User?>(context, listen: false)!.uid;
-                  Provider.of<TaskProvider>(context, listen: false)
-                      .createTask(newTask, userID); // Pass the userID
+                  if (widget.task == null) {
+                    // Create task if task is null (no existing task)
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .createTask(newTask, userID);
+                  } else {
+                    // Update task if task is not null (editing existing task)
+                    Provider.of<TaskProvider>(context, listen: false)
+                        .updateTask(newTask);
+                  }
                   Navigator.pop(context);
                 }
               },
-              child: Text('Save'),
+              child: Text(widget.task == null ? 'Save' : 'Update'), // Change button text based on task existence
             ),
           ],
         ),

@@ -49,7 +49,29 @@ class Home extends StatelessWidget {
                 return ListTile(
                   title: Text(snapshot.data![index].title),
                   subtitle: Text(snapshot.data![index].description),
-                  // Add more details here
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditTaskScreen(task: snapshot.data![index]),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          Provider.of<TaskProvider>(context, listen: false)
+                              .deleteTask(snapshot.data![index].id);
+                        },
+                      ),
+                    ],
+                  ),
                 );
               },
             );
