@@ -1,16 +1,75 @@
-# to_do_list
+# Project Name
 
-to do list project
+Brief description or overview of your project.
 
-## Getting Started
+## Table of Contents
 
-This project is a starting point for a Flutter application.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Structure](#structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-A few resources to get you started if this is your first Flutter project:
+## Introduction
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Briefly introduce your project. What problem does it solve? What technologies does it use?
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+List the key features of your project.
+
+## Installation
+
+Provide instructions on how to install and set up your project. Include any dependencies that need to be installed.
+
+## Usage
+
+Explain how to use your project. Provide examples if necessary.
+
+## Structure
+
+```
+│
+├───lib
+│   │   firebase_options.dart
+│   │   main.dart
+│   │
+│   ├───models
+│   │       task.dart
+│   │       user.dart
+│   │
+│   ├───screens
+│   │   │   wrapper.dart
+│   │   │
+│   │   ├───authenticate
+│   │   │       authenticate.dart
+│   │   │       register.dart
+│   │   │       sign_in.dart
+│   │   │
+│   │   ├───home
+│   │   │       home.dart
+│   │   │
+│   │   └───task
+│   │           edit_task_screen.dart
+│   │
+│   ├───services
+│   │       auth.dart
+│   │       database.dart
+│   │       task_provider.dart
+│   │
+│   └───shared
+│           constants.dart
+│           loading.dart
+```
+
+Explain the structure of your project directory.
+
+## Contributing
+
+Explain how others can contribute to your project. Include guidelines for submitting pull requests and reporting issues.
+
+## License
+
+Include information about the license under which your project is released.
